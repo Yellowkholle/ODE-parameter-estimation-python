@@ -37,6 +37,7 @@ def solutionTheoriqueLV(theta = [2,1,4,1], x0 = [5,3], pos = [221, 223], titre =
     plt.subplot(pos[1])
     plt.title(titre[1])                    #on met dans la deuxième ligne la courbe de W
     plt.plot(abscisse, np.array(W), "b")
+    plt.xlabel("theta = " + str(theta))
     plt.show()
     return(S,W)
 
