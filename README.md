@@ -15,7 +15,7 @@ To try them, in the Lotka-Volterra model, we only to respectively launch :
 
 *  "testMethodeDescenteEnGradientLV()"   &nbsp; &nbsp; #if we want the Gradient descent method  
 *  "testMethodesDeNewtonLV()" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #if we want to see the Gauss-Newton and Newton method  
-*  "test()" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #if we want to see all these methods  
+*  "test()" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #if we want to see all these methods  
       
 II - Bayesian approach GP Lotka-Volterra
 ----------------------------------------
