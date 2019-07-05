@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 from math import sqrt
+from scipy.optimize import differential_evolution
 
 
 # I - les fonctions nécessaires et liées au modèle de Lotka-Volterra (modèle étudié)
@@ -65,7 +66,7 @@ def fLV(S, W, theta):
     """la fonction f dans le modèle de Lotka-Volterra"""
     return(S*(theta[0] - theta[1]*W), -W*(theta[2] - theta[3]*S))
     
-def SLV(Y, theta, nombre):
+def SLV(theta, Y, nombre):
     """on calcule ici S pour le modèle de Lotka-Volterra"""
     deltat = 2/(nombre-1)
     return(sum([(Y[0][i] - Y[0][i-1] - fLV(Y[0][i-1], Y[1][i-1], theta)[0]*deltat)**2 for i in range(1, nombre)]) + sum([(Y[1][i] - Y[1][i-1] - fLV(Y[0][i-1], Y[1][i-1], theta)[1]*deltat)**2 for i in range(1, nombre)]))
@@ -115,7 +116,7 @@ def methodeDescenteEnGradient(obs, theta0, nombre, pos, titre, gradientS = gradi
         alpha = 1
         c, rho = 0.5, 0.9                                                       #choisit de manière arbitraire, seule contrainte : c, rho appartiennent à ]0,1[
         
-        while  S(obs, [theta[i] - alpha*g[i] for i in range(len(g))], nombre)  > (S(obs, theta, nombre) - c * alpha * arret):                                                 #cette boucle sert à chercher le meilleur alpha (ie : l'argmax de S(theta - alpha*gradient(S)),
+        while  S([theta[i] - alpha*g[i] for i in range(len(g))], obs, nombre)  > (S(theta, obs, nombre) - c * alpha * arret):                                                 #cette boucle sert à chercher le meilleur alpha (ie : l'argmax de S(theta - alpha*gradient(S)),
             alpha = alpha * rho
         theta = [theta[i] - alpha*g[i] for i in range(len(g))]                  #on applique la formule de récurrence
     solutionTheorique(theta, [obs[i][0] for i in range(len(obs))], pos, titre)               #on trace les résultats
@@ -176,7 +177,26 @@ def testMethodesDeNewtonLV(ecartTypeBruit = 0, nombre = 11, theta0 = [1.5, 0.5, 
     b = methodeNewton(obs, theta0, nombre, pos[2], titre[2], nombreDeRec, solutionTheorique, rFonction, Jacob, secondTermeHessienne)
     return(a,b)                                                                 #on applique les deux méthodes, on trace les rendus et on renvoie le paramètre calculé pour chacune de ces méthodes.
     
+
+# IV - La solution boîte noire avec une solution déjà dans python (grâce à scipy.optimize.differential_evolution)
+
+def boiteNoire(obs, nombre, bornes, pos, titre, solutionTheorique, S):
+    """ Cette fonction utilise une fonction déjà implémenté dans python pour trouver le paramètre qui minimise S
+    """
+    sol = differential_evolution(S, bornes, (obs, nombre))                      #on applique la fonction de python qui est la boîte noire
+    #print(sol)
+    solutionTheorique(sol.x, [obs[i][0] for i in range(len(obs))], pos, titre)        #on trace la courbe obtenue
+    return(sol)   
     
+def testBoiteNoireLV(ecartTypeBruit = 0, nombre = 11, thetaTheorique = [2,1,4,1], X0 = [5,3], bornes = [(0,5),(0,5),(0,5),(0,5)], pos = [[221, 223], [222, 224]], titre = [["S solution théorique", "W solution théorique"], ["S obtenu avec scipy", "W obtenu avec scipy"]], solutionTheorique = solutionTheoriqueLV, S = SLV):
+    """cette fonction sert à tester notre fonction précédente en le testant sur le modèle de Lotka-Volterra
+    """
+    obs = observation(ecartTypeBruit, nombre, pos)
+    solutionTheorique(thetaTheorique, X0, pos[0], titre[0])                     #on trace la solution théorique
+    sol = boiteNoire(obs, nombre, bornes, pos[1], titre[1], solutionTheorique, S)
+    return(sol.x, sol.fun)
+
+
 # IV - Si on veut tester les 4 méthodes il suffit de lancer test()
 
 def test(ecartTypeBruit = 0.5, nombre = 11, theta0 = [1.5, 0.5, 3.5, 0.5], thetaTheorique = [2,1,4,1], X0 = [5,3], pos = [[241,245], [242, 246], [243, 247], [244, 248]], titre = [["S solution théorique","W solution théorique"], ["S par la méthode de descente en gradient", "W par la méthode de descente en gradient"], ["S par la méthode de Gauss-Newton", "W par la méthode de Gauss-Newton"], ["S par la méthode de Newton", "W par la méthode de Newton"]], nombreDeRec = 1000, gradientS=gradientSLV, S = SLV, solutionTheorique = solutionTheoriqueLV, rFonction = rLV, Jacob = JacLV, secondTermeHessienne = secondTermeHessienneLV, pas = 10**(-3)):
