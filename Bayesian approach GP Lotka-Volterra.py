@@ -534,21 +534,6 @@ def demo_LV():
     plt.plot(abscisse, sol[1], "g")
     plt.show()
     
-    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    #test de graphe à tracer mais je suis assez mécontent, donc je le mets en commentaire, car objectivement peu utile pour notre usage
-    # incertitude = []
-    # for i in range(Iterationtotal):
-    #     incertitude.append(solutionTheoriqueLV(samptheta[i], X0[-2], False))
-    # moyenne = np.mean(incertitude, 1)
-    # std = np.std(incertitude, 1)
-    # abscisse = np.linspace(0,2,1001)
-    # 
-    # plt.subplot(211)                        #graphe pour S
-    # plt.errorbar(abscisse, moyenne[0], yerr=std[0], ecolor = "springgreen")
-    # plt.subplot(212)
-    # plt.errorbar(abscisse, moyenne[1], yerr=std[1], ecolor = "springgreen")
-    # plt.show()
-    
     return(MUtheta, STDtheta)
     
     
