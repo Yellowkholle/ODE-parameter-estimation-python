@@ -98,25 +98,28 @@ def gradientSLV(Y, theta, nombre = 11):
 #II - Méthode de la descente en gradient pour la tester il suffit de lancer "testMethodeDescenteEnGradientLV()"
 
 def methodeDescenteEnGradient(obs, theta0, nombre, pos, titre, gradientS = gradientSLV, S = SLV, solutionTheorique = solutionTheoriqueLV, pas = 10**(-3)):
-    """cette fonction sert à appliquer la méthode de la descente en gradient"""
+    """cette fonction sert à appliquer la méthode de la descente en gradient
+    
+    ON AJOUTE ICI L'ALGORITHME DE BACKTRACKING LINE SEARCH POUR EXHIBER alpha,
+    c'est beaucoup plus rapide que d'avancer petit à petit pour trouver alpha
+    
+    """
     theta = theta0                                                              #initialisation de theta
     arret = 42
-    pas = 10**(-3)
     while arret > 0.001:                                                        #Notre condition d'arrêt est quand la norme du gradient de S est inférieur (ou égal) à 0.001 (donc qu'on arrive sur un plateau/partie plate)
-        g = gradientS(obs, theta, nombre)                                       #Si le gradient de S à une dépendance en l'écart-type des observations il faut rajouter cette variable
-        alpha = 0
-        min = S(obs, [theta[i] - alpha*g[i] for i in range(len(g))], nombre)    #idem (vis à vis de l'écart-type)
-        condition = min
-        while condition <= min:                                                 #cette boucle sert à chercher le meilleur alpha (ie : l'argmax de S(theta - alpha*gradient(S)),
-                                                                                #pour cela on va augmenter apha petit à petit (du pas) jusqu'a ce que S n'augmente plus (c'est la condition d'arrêt).
-            min = condition
-            alpha += pas
-            condition = S(obs, [theta[i] - alpha*g[i] for i in range(len(g))], nombre)      #idem (vis à vis de l'écart-type)
-        arret = sum([abs(i) for i in g])                                        #on calcule la norme 1 du gradient pour notre condition d'arrêt
+        g = np.array(gradientS(obs, theta, nombre))                             #Si le gradient de S à une dépendance en l'écart-type des observations il faut rajouter cette variable
+        
+        arret = np.dot(g.T,g)                                                   #on calcule la norme 1 du gradient pour notre condition d'arrêt
         print(arret)                                                            #permet de suivre la progression du programme
-        theta = [theta[i] - (alpha-pas)*g[i] for i in range(len(g))]            #on applique la formule de récurrence
+        
+        alpha = 1
+        c, rho = 0.5, 0.9                                                       #choisit de manière arbitraire, seule contrainte : c, rho appartiennent à ]0,1[
+        
+        while  S(obs, [theta[i] - alpha*g[i] for i in range(len(g))], nombre)  > (S(obs, theta, nombre) - c * alpha * arret):                                                 #cette boucle sert à chercher le meilleur alpha (ie : l'argmax de S(theta - alpha*gradient(S)),
+            alpha = alpha * rho
+        theta = [theta[i] - alpha*g[i] for i in range(len(g))]                  #on applique la formule de récurrence
     solutionTheorique(theta, [obs[i][0] for i in range(len(obs))], pos, titre)               #on trace les résultats
-    return(theta)                                                               #on renvoie les paramètres trouvés par cette méthode
+    return(theta)   
 
 def testMethodeDescenteEnGradientLV(ecartTypeBruit = 0, nombre = 11, theta0 = [1.5, 0.5, 3.5, 0.5], thetaTheorique = [2,1,4,1], X0 = [5,3], pos = [[221,223], [222, 224]], titre = [["S solution théorique","W solution théorique"],["S par la méthode de descente en gradient", "W par la méthode de descente en gradient"]], gradientS=gradientSLV, S = SLV, solutionTheorique = solutionTheoriqueLV, pas = 10**(-3)):
     """cette fonction a été pensée pour que notre code assez indépendant du systeme d'equation que l'on cherche à résoudre, et ici on résout le problème de Lotka-Volterra (LV), il y a beaucoup de paramètres mais objectivement peu servent vraiment :
