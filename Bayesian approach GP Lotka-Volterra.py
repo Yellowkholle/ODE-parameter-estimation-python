@@ -567,7 +567,7 @@ def solutionTheoriqueLV(theta = [2,1,4,1], x0 = [5,3],bool = True, pos = [221, 2
     W=[x0[1]]
     for i in range (1,1001):                                                    # on applique la méthode d'Euler
         S.append(S[-1] + h * S[-1] * (alpha - beta * W[-1]))
-        W.append(W[-1] - h * W[-1] * (delta - gamma * S[-2]))
+        W.append(W[-1] - h * W[-1] * (delta - gamma * S[-1]))
     abscisse = np.linspace(0,2,1001)
     if bool:
         plt.figure(1)
