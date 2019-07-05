@@ -28,7 +28,7 @@ def solutionTheoriqueLV(theta = [2,1,4,1], x0 = [5,3], pos = [221, 223], titre =
     W=[x0[1]]
     for i in range (1,1001):
         S.append(S[-1] + h * S[-1] * (alpha - beta * W[-1]))
-        W.append(W[-1] - h * W[-1] * (delta - gamma * S[-2]))
+        W.append(W[-1] - h * W[-1] * (delta - gamma * S[-1]))
     abscisse = np.linspace(0,2,1001)
     plt.figure(1)
     plt.subplot(pos[0])                        #graphe pour S
@@ -82,7 +82,7 @@ def secondTermeHessienneLV(obs, nombre):
     matrice = np.zeros((4,4))
     for i in range(nombre-1):
         matrice = matrice + np.array([[obs[0][i]**2,-obs[0][i]**2*obs[1][i],0,0],[-obs[0][i]**2*obs[1][i], obs[0][i]**2*obs[1][i]**2, 0, 0],[0,0, obs[1][i]**2, -obs[0][i]*obs[1][i]**2],[0,0,-obs[0][i]*obs[1][i]**2, obs[0][i]**2*obs[1][i]**2]])
-    deltat = 2*(nombre-1)
+    deltat = 2/(nombre-1)
     return(matrice*(deltat)**2)
 
 def gradientSLV(Y, theta, nombre = 11):
@@ -118,7 +118,7 @@ def methodeDescenteEnGradient(obs, theta0, nombre, pos, titre, gradientS = gradi
     solutionTheorique(theta, [obs[i][0] for i in range(len(obs))], pos, titre)               #on trace les résultats
     return(theta)                                                               #on renvoie les paramètres trouvés par cette méthode
 
-def testMethodeDescenteEnGradientLV(ecartTypeBruit = 0.5, nombre = 101, theta0 = [1.5, 0.5, 3.5, 0.5], thetaTheorique = [2,1,4,1], X0 = [5,3], pos = [[221,223], [222, 224]], titre = [["S solution théorique","W solution théorique"],["S par la méthode de descente en gradient", "W par la méthode de descente en gradient"]], gradientS=gradientSLV, S = SLV, solutionTheorique = solutionTheoriqueLV, pas = 10**(-3)):
+def testMethodeDescenteEnGradientLV(ecartTypeBruit = 0, nombre = 11, theta0 = [1.5, 0.5, 3.5, 0.5], thetaTheorique = [2,1,4,1], X0 = [5,3], pos = [[221,223], [222, 224]], titre = [["S solution théorique","W solution théorique"],["S par la méthode de descente en gradient", "W par la méthode de descente en gradient"]], gradientS=gradientSLV, S = SLV, solutionTheorique = solutionTheoriqueLV, pas = 10**(-3)):
     """cette fonction a été pensée pour que notre code assez indépendant du systeme d'equation que l'on cherche à résoudre, et ici on résout le problème de Lotka-Volterra (LV), il y a beaucoup de paramètres mais objectivement peu servent vraiment :
     ecartTypeBruit et nombre servent à générer des observations
     theta0 à avoir une valeur pour initialiser notre algorithme
@@ -141,15 +141,13 @@ def methodeGaussNewton(obs, theta0, nombre, pos, titre, nombreDeRec, solutionThe
         r = rFonction(obs,theta, nombre)                                        #on calcule r
         Jac = Jacob(obs, theta, nombre, r)                                      #on calcule la jacobienne de r
         matrice = np.dot(np.linalg.inv(np.dot(Jac.T, Jac)),Jac.T)
-        theta=theta - np.dot(matrice,r.T)
-        theta0 = theta0 - np.dot(matrice,r.T)                                   #on applique la formule de récurrence
+        theta = theta - np.dot(matrice,r.T)                                     #on applique la formule de récurrence
     solutionTheorique(theta, [obs[i][0] for i in range(len(obs))], pos, titre)               #on trace les résultats
     return(theta)                                                               #on renvoie les paramètres trouvés par cette méthode
 
 def methodeNewton(obs, theta0, nombre, pos, titre, nombreDeRec, solutionTheorique = solutionTheoriqueLV, rFonction = rLV, Jacob = JacLV, secondTermeHessienne = secondTermeHessienneLV):
     """ ici on présente la méthode de Newton sans l'approximation de Gauss-Newton"""
     theta = theta0                                                              #on initialise theta
-    deltat = 2/(nombre-1)
     matrice = secondTermeHessienne(obs, nombre)                                 #!!!!  le second terme de la hessienne ne dépend que des observations dans notre cas, donc je l'ai mis ici,
                                                                                 #!!!!  si ce n'est pas le cas il faut écrire cette ligne dans la boucle for qui suit
     for i in range(nombreDeRec):
@@ -160,7 +158,7 @@ def methodeNewton(obs, theta0, nombre, pos, titre, nombreDeRec, solutionTheoriqu
     solutionTheorique(theta, [obs[i][0] for i in range(len(obs))], pos, titre)               #on trace la courbe
     return(theta)                                                               #on renvoie les paramètres trouvés par cette méthode
 
-def testMethodesDeNewtonLV(ecartTypeBruit = 0.5, nombre = 11, theta0 = [1.5, 0.5, 3.5, 0.5], thetaTheorique = [2,1,4,1], X0 = [5,3], pos = [[231,234], [232, 235], [233, 236]], titre = [["S solution théorique","W solution théorique"],["S par la méthode de Gauss-Newton", "W par la méthode de Gauss-Newton"],["S par la méthode de Newton", "W par la méthode de Newton"]], nombreDeRec = 1000, solutionTheorique = solutionTheoriqueLV, rFonction = rLV, Jacob = JacLV, secondTermeHessienne = secondTermeHessienneLV):
+def testMethodesDeNewtonLV(ecartTypeBruit = 0, nombre = 11, theta0 = [1.5, 0.5, 3.5, 0.5], thetaTheorique = [2,1,4,1], X0 = [5,3], pos = [[231,234], [232, 235], [233, 236]], titre = [["S solution théorique","W solution théorique"],["S par la méthode de Gauss-Newton", "W par la méthode de Gauss-Newton"],["S par la méthode de Newton", "W par la méthode de Newton"]], nombreDeRec = 1000, solutionTheorique = solutionTheoriqueLV, rFonction = rLV, Jacob = JacLV, secondTermeHessienne = secondTermeHessienneLV):
     """cette fonction a été pensée pour que notre code assez indépendant du systeme d'equation que l'on cherche à résoudre, et ici on résout le problème de Lotka-Volterra (LV), il y a beaucoup de paramètres mais objectivement peu servent vraiment :
     ecartTypeBruit et nombre servent à générer des observations
     theta0 à avoir une valeur pour initialiser notre algorithme
