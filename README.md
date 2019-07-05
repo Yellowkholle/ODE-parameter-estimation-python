@@ -17,8 +17,8 @@ To try them, in the Lotka-Volterra model, we only to respectively launch :
 *  "testMethodesDeNewtonLV()" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #if we want to see the Gauss-Newton and Newton method  
 *  "test()" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #if we want to see all these methods  
       
-II - Bayesian approach GP Lotka-Volterra
-----------------------------------------
+II - Bayesian approach GP Lotka-Volterra.py
+-------------------------------------------
 
 This code is mainly the translation in python of the code https://github.com/odegp/code.  
 To try this code with the Lotka-Volterra model, we only need to write in the consol :  
