@@ -13,9 +13,9 @@ I - Lotka-Volterra classical methods.py
 In this file we can found three classical methods (the gradient descent, the Newton and the Gauss-Newton method).
 To try them, in the Lotka-Volterra model, we only to respectively launch :
 
-|  "testMethodeDescenteEnGradientLV()"       #if we want the Gradient descent method  
-|  "testMethodesDeNewtonLV()"                #if we want to see the Gauss-Newton and Newton method  
-|  "test()"                                  #if we want to see all these methods  
+*  "testMethodeDescenteEnGradientLV()"       #if we want the Gradient descent method  
+*  "testMethodesDeNewtonLV()"                #if we want to see the Gauss-Newton and Newton method  
+*  "test()"                                  #if we want to see all these methods  
       
 II - Bayesian approach GP Lotka-Volterra
 ----------------------------------------
@@ -23,4 +23,4 @@ II - Bayesian approach GP Lotka-Volterra
 This code is mainly the translation in python of the code https://github.com/odegp/code.  
 To try this code with the Lotka-Volterra model, we only need to write in the consol :  
 
-   "demo_LV()"
+*   "demo_LV()"
