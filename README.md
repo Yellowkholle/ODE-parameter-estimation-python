@@ -15,7 +15,7 @@ To try them, in the Lotka-Volterra model, we only to respectively launch :
 
 *  "testMethodeDescenteEnGradientLV()"   &nbsp; &nbsp; #if we want the Gradient descent method  
 *  "testMethodesDeNewtonLV()" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #if we want to see the Gauss-Newton and Newton method  
-*  "testBoiteNoireLV()" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #if we want to use a function that already has
+*  "testBoiteNoireLV()" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; #if we want to use a function that already has
 *  "test()" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #if we want to see all these methods (not the one with named "black box")
       
 II - Bayesian approach GP Lotka-Volterra.py
